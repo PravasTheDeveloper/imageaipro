@@ -1,3 +1,5 @@
+"use server"
+
 /* eslint-disable camelcase */
 import { clerkClient } from "@clerk/nextjs";
 import { WebhookEvent } from "@clerk/nextjs/server";
