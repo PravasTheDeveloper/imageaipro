@@ -10,7 +10,6 @@ import { RiRobot2Line } from "react-icons/ri";
 import { TbZoomScan } from "react-icons/tb";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import { PiSelectionBackground } from "react-icons/pi";
-import { UserButton } from '@clerk/nextjs';
 
 export default function LeftSideNavBar() {
 
@@ -60,9 +59,6 @@ export default function LeftSideNavBar() {
                 <div className='leftsidebuttonauto flex items-center  font-semibold px-2'>
                     <RiCoinsLine className='text-lg' />
                     <Link href={"/dashboard"} className='text-md ml-2'>Credit</Link>
-                </div>
-                <div className='text-sm'>
-                    <UserButton afterSignOutUrl='/' showName />
                 </div>
             </div>
         </div>
