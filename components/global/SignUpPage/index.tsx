@@ -1,5 +1,5 @@
 "use client"
-import React from 'react'
+import React, { useState } from 'react'
 
 import { Button } from "@/components/ui/button"
 import {
@@ -27,6 +27,32 @@ import Link from 'next/link'
 
 
 export default function SignUpPage() {
+
+    const [UserDetails, setUserDetails] = useState({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        cpassword: ""
+    })
+
+    let name = ""
+    let value = ""
+
+    const handleinput = (e: any) => {
+        name = e.target.name
+        value = e.target.value
+
+        setUserDetails((prevUserDetails) => ({
+            ...prevUserDetails,
+            [name]: value,
+        }));
+    }
+    const handleInputHandle = () => {
+        console.log(UserDetails)
+    }
+
+
     return (
         <div className='container mx-auto bg-slate-100 w-full min-h-screen'>
             <div className='w-full h-full flex justify-center items-center py-5'>
@@ -58,25 +84,29 @@ export default function SignUpPage() {
                             <div className="grid w-full items-center gap-4">
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="name">Name</Label>
-                                    <Input type='text' id="name" placeholder="Your Name" />
+                                    <Input type='text' value={UserDetails.name} name="name" onChange={handleinput} id="name" placeholder="Your Name" />
+                                </div>
+                                <div className="flex flex-col space-y-1.5">
+                                    <Label htmlFor="username">User Name</Label>
+                                    <Input type='text' value={UserDetails.username} name="username" onChange={handleinput} id="username" placeholder="Your User Name" />
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="email">Email Address</Label>
-                                    <Input type='email' id="name" placeholder="Your Email Address" />
+                                    <Input type='email' value={UserDetails.email} name="email" onChange={handleinput} id="email" placeholder="Your Email Address" />
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="password">Password</Label>
-                                    <Input type='password' id="name" placeholder="Your password" />
+                                    <Input type='password' value={UserDetails.password} name="password" onChange={handleinput} id="password" placeholder="Your password" />
                                 </div>
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="cpassword">Confirm Passoword</Label>
-                                    <Input type='password' id="name" placeholder="Confirm Password" />
+                                    <Input type='password' value={UserDetails.cpassword} name="cpassword" onChange={handleinput} id="cpassword" placeholder="Confirm Password" />
                                 </div>
                             </div>
                         </form>
                     </CardContent>
                     <CardFooter className="flex flex-col">
-                        <Button className='w-full'>Sign Up</Button>
+                        <Button className='w-full' onClick={handleInputHandle}>Sign Up</Button>
                         <div className='text-sm mt-2'>Already have account ? <Link href={"/signin"}>Sign In</Link></div>
                     </CardFooter>
                 </Card>
