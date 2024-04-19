@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CgProfile } from "react-icons/cg";
 import { RiCoinsLine } from "react-icons/ri";
 import { FiHome } from "react-icons/fi";
@@ -10,12 +10,26 @@ import { RiRobot2Line } from "react-icons/ri";
 import { TbZoomScan } from "react-icons/tb";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import { PiSelectionBackground } from "react-icons/pi";
+import { signOut } from 'next-auth/react';
+import axios from 'axios';
+import { fetchUserDetails } from '@/redux/userDetailsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 export default function LeftSideNavBar() {
 
     const router = useRouter().route
+    const dispatch = useDispatch();
 
     console.log(router)
+    const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
+
+    console.log(userDetails)
+
+    useEffect(() => {
+        // @ts-ignore
+        dispatch(fetchUserDetails("6622978345ce1f88841c7318"));
+    }, [dispatch])
 
     return (
         <div className='w-[220px] 2xl:w-[300px] h-full border-r border-slate-400 2xl:p-10 p-5 hidden md:flex flex-col justify-between'>
@@ -54,7 +68,7 @@ export default function LeftSideNavBar() {
             <div>
                 <div className='leftsidebuttonauto flex items-center  font-semibold px-2'>
                     <CgProfile className='text-lg' />
-                    <Link href={"/dashboard"} className='text-md ml-2'>Profile</Link>
+                    <Link href={"/dashboard"} className='text-md ml-2' onClick={()=>{signOut()}}>Profile</Link>
                 </div>
                 <div className='leftsidebuttonauto flex items-center  font-semibold px-2'>
                     <RiCoinsLine className='text-lg' />

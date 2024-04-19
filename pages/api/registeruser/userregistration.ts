@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import prisma from '@/lib/prismadb'
 import { getSession } from 'next-auth/react';
+import nodemailer from "nodemailer";
 
 export default async function handler(
     req: NextApiRequest,
@@ -8,9 +9,9 @@ export default async function handler(
 ) {
     try {
         if (req.method === "POST") {
-            const { firstName, lastName, email, password } = req.body;
+            const { name, email, username, password } = req.body;
 
-            if (!firstName || !lastName || !email || !password) {
+            if (!name || !email || !username || !password) {
                 res.status(400).json({ message: 'Please fill all fields' });
             } else {
                 await prisma.$connect();
@@ -29,26 +30,53 @@ export default async function handler(
 
                     const newUser = await prisma.user.create({
                         data: {
-                            firstName: firstName,
-                            lastName: lastName,
+                            name: name,
+                            username: username,
                             email: email,
                             password: password,
-                            creditNumber: 100,
-                            usedCredit: 0
+                            planId: 1,
+                            creditBalance: 10,
+                            photo: "anonymousphoto.png"
                         },
                     });
 
-                    const userId = newUser.id;
 
-                    const newUserCredit = await prisma.creditHistory.create({
-                        data: {
-                            email: email,
-                            creditAdd: 100,
-                            creditUsed: 0,
-                            userId: userId
-                        },
-                    })
+                    // const userId = newUser.id;
+
+                    // const newUserCredit = await prisma.creditHistory.create({
+                    //     data: {
+                    //         email: email,
+                    //         creditAdd: 100,
+                    //         creditUsed: 0,
+                    //         userId: userId
+                    //     },
+                    // })
                     if (newUser) {
+                        // const transporter = nodemailer.createTransport({
+                        //     host: 'smtp.ethereal.email',
+                        //     port: 587,
+                        //     auth: {
+                        //         user: 'liliane.ohara65@ethereal.email',
+                        //         pass: '44gR5A4Rrf64tkEBHh'
+                        //     }
+                        // });
+                        
+
+                        // const mailOptions = {
+                        //     from: '"Pravas Chandra" <info.pravas.cs@gmail.com>',
+                        //     to: 'pravassarkarmithun2020@gmail.com',
+                        //     subject: 'Welcome to YourApp!',
+                        //     text: `Hi ${name},\n\nWelcome to YourApp! Your account has been successfully created.`
+                        // };
+
+                        // transporter.sendMail(mailOptions, function (error, info) {
+                        //     if (error) {
+                        //         console.error(error);
+                        //     } else {
+                        //         console.log('Email sent: ' + info.response);
+                        //     }
+                        // });
+
                         res.status(201).json({ message: "User created successfully" });
                     } else {
                         res.status(500).json({ message: "Server error" });
