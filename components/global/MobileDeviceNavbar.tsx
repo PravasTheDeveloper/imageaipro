@@ -89,9 +89,9 @@ export default function MobileDeviceNavbar() {
                                 <HiOutlineAdjustments className='mobile-icon-left-bar' />
                                 <Link href={"/dashboard"}>Object Recolor</Link>
                             </li>
-                            <li className='mobilenavbarstyles'>
-                                <PiSelectionBackground className='mobile-icon-left-bar' />
-                                <Link href={"/dashboard"}>Background Remove</Link>
+                            <li className={`${router === "/backgroundremove" ? "bg-active" : "leftsidebuttonauto"}`}>
+                                <PiSelectionBackground className='icon-left-bar' />
+                                <Link href={"/backgroundremove"}>Background Remove</Link>
                             </li>
                         </ul>
                     </div>
