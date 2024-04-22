@@ -46,9 +46,9 @@ export default function LeftSideNavBar() {
                         <IoImageOutline className='icon-left-bar' />
                         <Link href={"/dashboard"}>Image Restore</Link>
                     </li>
-                    <li className='leftsidebuttonauto'>
+                    <li className={`${router === "/generativefill" ? "bg-active" : "leftsidebuttonauto"}`}>
                         <RiRobot2Line className='icon-left-bar' />
-                        <Link href={"/dashboard"}>Generative Fill</Link>
+                        <Link href={"/generativefill"}>Generative Fill</Link>
                     </li>
                     <li className='leftsidebuttonauto'>
                         <TbZoomScan className='icon-left-bar' />

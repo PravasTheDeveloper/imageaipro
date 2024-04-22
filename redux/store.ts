@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import countReducer from './slice';
 import userReducer from './userDetailsSlice'
+import aspectRationReducer from './aspectRationSlice';
 
 const store = configureStore({
   reducer: {
     count: countReducer,
-    userdetail: userReducer
+    userdetail: userReducer,
+    aspectRatio: aspectRationReducer
   },
 });
 
