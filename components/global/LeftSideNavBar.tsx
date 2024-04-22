@@ -21,10 +21,10 @@ export default function LeftSideNavBar() {
     const router = useRouter().route
     const dispatch = useDispatch();
 
-    console.log(router)
+    // console.log(router)
     const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
 
-    console.log(userDetails)
+    // console.log(userDetails)
 
     useEffect(() => {
         // @ts-ignore
@@ -58,9 +58,9 @@ export default function LeftSideNavBar() {
                         <HiOutlineAdjustments className='icon-left-bar' />
                         <Link href={"/dashboard"}>Object Recolor</Link>
                     </li>
-                    <li className='leftsidebuttonauto'>
+                    <li className={`${router === "/backgroundremove" ? "bg-active" : "leftsidebuttonauto"}`}>
                         <PiSelectionBackground className='icon-left-bar' />
-                        <Link href={"/dashboard"}>Background Remove</Link>
+                        <Link href={"/backgroundremove"}>Background Remove</Link>
                     </li>
                 </ul>
             </div>

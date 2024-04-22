@@ -1,11 +1,14 @@
 "use client";
 import { useToast } from "@/components/ui/use-toast"
 import { dataUrl, getImageSize } from "@/lib/utils";
+import { setDimensions } from "@/redux/imageDetailsSlice";
+import { RootState } from "@/redux/store";
 import { CldImage, CldUploadWidget } from "next-cloudinary"
 import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 import Image from "next/image";
 import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
+import { useDispatch, useSelector } from "react-redux";
 
 type MediaUploaderProps = {
   onValueChange: (value: string) => void;
@@ -17,34 +20,13 @@ type MediaUploaderProps = {
 
 const MediaUploader = () => {
   const { toast } = useToast()
+  const ImageDetails = useSelector((state: RootState) => state.imageData)
 
-  const [ImageDetails, setImageDetails] = useState({
-    publicId: "",
-    width: "",
-    height: "",
-    secureURL: ""
-  })
-
+  const dispatch = useDispatch()
+  console.log(ImageDetails)
   const onUploadSuccessHandler = (result: any) => {
-    // setImage((prevState: any) => ({
-    //   ...prevState,
-    //   publicId: result?.info?.public_id,
-    //   width: result?.info?.width,
-    //   height: result?.info?.height,
-    //   secureURL: result?.info?.secure_url
-    // }))
 
-    console.log(result.info)
-
-    setImageDetails((prevState: any) => ({
-      ...prevState,
-      publicId: result?.info?.public_id,
-      width: result?.info?.width,
-      height: result?.info?.height,
-      secureURL: result?.info?.secure_url
-    }))
-
-    // onValueChange(result?.info?.public_id)
+    dispatch(setDimensions({ width: result?.info?.width, height: result?.info?.height, publicId: result?.info?.public_id }));
 
     toast({
       title: 'Image uploaded successfully',
@@ -75,10 +57,6 @@ const MediaUploader = () => {
     >
       {({ open }) => (
         <div className="flex flex-col gap-4">
-          <h3 className="h3-bold text-dark-600">
-            Original
-          </h3>
-
           {ImageDetails.publicId ? (
             <>
               <div className="cursor-pointer overflow-hidden rounded-[10px]">
@@ -95,10 +73,13 @@ const MediaUploader = () => {
             </>
           ) : (
             <div className="media-uploader_cta flex flex-col items-center justify-center" onClick={() => open()}>
-              <div className='w-10 h-10 bg-slate-800 text-2xl text-white rounded-xl flex justify-center items-center'>
+              <h3 className="h3-bold text-dark-600">
+                Original
+              </h3>
+              <div className='w-10 h-10 bg-slate-800 my-5 cursor-pointer text-2xl text-white rounded-xl flex justify-center items-center'>
                 <FiPlus />
               </div>
-              <p className='w-auto text-sm text-slate-900 mt-3 font-semibold capitalize'>
+              <p className='w-auto text-sm text-slate-900 font-semibold capitalize'>
                 Please Enter Your Image Here
               </p>
             </div>

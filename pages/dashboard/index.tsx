@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import MediaUploader from '@/components/global/MediaUploader';
+import MobileDeviceNavbar from '@/components/global/MobileDeviceNavbar';
 
 export default function DashBoard() {
   const { data: session, status } = useSession();
@@ -29,6 +30,7 @@ export default function DashBoard() {
     <>
       <div className='w-full h-screen flex'>
         <LeftSideNavBar />
+        <MobileDeviceNavbar />
         <div className='flex-1'>
           {/* <MediaUploader /> */}
           <CldImage

@@ -33,10 +33,10 @@ export default function MobileDeviceNavbar() {
     const router = useRouter().route
     const dispatch = useDispatch();
 
-    console.log(router)
+    // console.log(router)
     const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
 
-    console.log(userDetails)
+    // console.log(userDetails)
 
     useEffect(() => {
         // @ts-ignore

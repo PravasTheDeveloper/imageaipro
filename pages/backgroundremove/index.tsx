@@ -17,7 +17,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DotLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 
-export default function GenerativeFill() {
+export default function BackGroundRemove() {
     const { data: session, status } = useSession();
     const router = useRouter();
     const dispatch = useDispatch()
@@ -80,7 +80,8 @@ export default function GenerativeFill() {
                 height: ImageDetails.height,
                 src: ImageDetails.publicId,
                 aspectRatio: AspectRatioOption.aspectRatio,
-                fillBackground: true
+                removeBackground: true,
+                background:"white"
             }), inputname)
         }
     };
@@ -95,7 +96,7 @@ export default function GenerativeFill() {
                     <div className='h-full w-full flex flex-col justify-between pb-5'>
                         <div>
                             <h1 className='text-3xl font-semibold text-indigo-950'>
-                                Generative Fill
+                                Background Remove
                             </h1>
                             <p className='text-slate-500'>
                                 {`Enhance your image's corners with ai`}
@@ -130,7 +131,8 @@ export default function GenerativeFill() {
                                                     alt="image"
                                                     sizes={"(max-width: 767px) 100vw, 50vw"}
                                                     className="media-uploader_cldImage p-5"
-                                                    fillBackground
+                                                    removeBackground
+                                                    background="white"
                                                 />
                                                 :
                                                 <div className='flex justify-center flex-col items-center font-semibold'>
