@@ -5,6 +5,7 @@ import React, { useEffect } from 'react'
 import { CldImage, CldUploadWidget } from 'next-cloudinary';
 import MediaUploader from '@/components/global/MediaUploader';
 import MobileDeviceNavbar from '@/components/global/MobileDeviceNavbar';
+import MainDashBoadSection from '@/components/global/MainDashBoadSection';
 
 export default function DashBoard() {
   const { data: session, status } = useSession();
@@ -28,21 +29,11 @@ export default function DashBoard() {
   }
   return (
     <>
-      <div className='w-full h-screen flex'>
+      <div className='w-full h-screen md:flex'>
         <LeftSideNavBar />
         <MobileDeviceNavbar />
         <div className='flex-1'>
-          {/* <MediaUploader /> */}
-          <CldImage
-            width={400}
-            height={400}
-            src={"imageaipro/n586qlzvhl6h4pgcnusx"}
-            alt="image"
-            sizes={"(max-width: 767px) 100vw, 50vw"}
-            // placeholder={dataUrl as PlaceholderValue}
-            className="media-uploader_cldImage"
-            fillBackground
-          />
+          <MainDashBoadSection />
         </div>
       </div>
     </>

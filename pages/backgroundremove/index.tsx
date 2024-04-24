@@ -8,8 +8,10 @@ import { Input } from '@/components/ui/input';
 import { download } from '@/lib/utils';
 import { setLoadingFalse } from '@/redux/aspectRationSlice';
 import { RootState } from '@/redux/store';
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { CldImage, getCldImageUrl } from 'next-cloudinary';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react'
 import { TbPhotoScan } from "react-icons/tb";
@@ -17,13 +19,52 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DotLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 
-export default function BackGroundRemove() {
+export default function GenerativeFill() {
+
+    const BestColorsToUse = [
+        {
+            id: 1,
+            name: "white",
+            color: "#FFFFFF",
+        },
+        {
+            id: 2,
+            name: "lightgray",
+            color: "#D3D3D3",
+        },
+        {
+            id: 4,
+            name: "lightblue",
+            color: "#ADD8E6",
+        },
+        {
+            id: 5,
+            name: "lightpink",
+            color: "#FFB6C1",
+        },
+        {
+            id: 7,
+            name: "lightgreen",
+            color: "#90EE90",
+        },
+        {
+            id: 8,
+            name: "lightyellow",
+            color: "#FFFFE0",
+        }
+    ];
+
+
+    const [backgroundColorForImage, setbackgroundColorForImage] = useState("")
     const { data: session, status } = useSession();
     const router = useRouter();
     const dispatch = useDispatch()
     const AspectRatioOption = useSelector((state: RootState) => state.aspectRatio)
     const ImageDetails = useSelector((state: RootState) => state.imageData)
-    console.log(AspectRatioOption)
+    const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
+    console.log(session)
+
+
 
     if (AspectRatioOption.loading === true) {
         setTimeout(() => {
@@ -39,21 +80,6 @@ export default function BackGroundRemove() {
         if (status === "loading") return;
         if (!session) router.push('/signin');
     }, [session, status, router]);
-
-    const handleTransformImage = () => {
-
-        if (AspectRatioOption.aspectRatio === '') {
-            Swal.fire({
-                title: "Input Error",
-                text: "Please fill all the feild",
-                icon: "error"
-            });
-        } else {
-            const cloudinaryUrl = `https://res.cloudinary.com/dxhaelva2/image/upload/b_gen_fill,ar_${AspectRatioOption},c_pad/c_limit,w_1920/f_auto/q_auto/v1/imageaipro/s9f0elknptqkwmkympwv`;
-            setTransformedUrl(cloudinaryUrl);
-        }
-
-    };
 
     if (status === "loading") {
         return (
@@ -81,10 +107,38 @@ export default function BackGroundRemove() {
                 src: ImageDetails.publicId,
                 aspectRatio: AspectRatioOption.aspectRatio,
                 removeBackground: true,
-                background:"white"
+                background:backgroundColorForImage
             }), inputname)
         }
     };
+
+    const handleSaveImageDetails = async () => {
+        const { width, height, publicId, original_filename } = ImageDetails;
+        const { aspectRatio } = AspectRatioOption
+
+        const response = await axios.post("/api/imageinfosave/imageinfosave", {
+            width,
+            height,
+            publicId,
+            transformationType: "removeBackground",
+            title: inputname == "" ? original_filename : inputname,
+            aspectRatio: aspectRatio,
+            backgroundColor : backgroundColorForImage,
+            secureURL: ImageDetails.secureURL,
+            // @ts-ignore
+            authorId: userDetails?.id,
+            imagesize: ImageDetails.iamgesize,
+            
+        })
+
+        if (response.status = 200) {
+            Swal.fire({
+                title: "Save Successfull",
+                text: "Image Details Save Successfull",
+                icon: "success"
+            });
+        }
+    }
 
     return (
         <>
@@ -96,19 +150,40 @@ export default function BackGroundRemove() {
                     <div className='h-full w-full flex flex-col justify-between pb-5'>
                         <div>
                             <h1 className='text-3xl font-semibold text-indigo-950'>
-                                Background Remove
+                                Generative Fill
                             </h1>
-                            <p className='text-slate-500'>
+                            <p className='text-slate-500 mb-10'>
                                 {`Enhance your image's corners with ai`}
                             </p>
-                            <Input type="text" onChange={(e) => { setinputname(e.target.value) }} value={inputname} className='my-10' placeholder="Your File Name" />
-                            <SelectDemo />
+                            <label  className='text-sm font-semibold' htmlFor="">File Name</label>
+                            <Input type="text" onChange={(e) => { setinputname(e.target.value) }} value={inputname === "" ? ImageDetails.original_filename : inputname} placeholder="Your File Name" />
+                            {/* <SelectDemo /> */}
+                            <div className='mt-10 flex'>
+                                <div className='w-16 cursor-pointer p-1 h-16 mr-3 bg-slate-400 flex rounded'>
+                                    <div className={`w-full h-full bg-transparent`} onClick={() => setbackgroundColorForImage("transparent")}>
+                                        <Image src={"/mainsource/transperent.png"} width={70} height={70} alt='Transperent Image' />
+                                    </div>
+                                </div>
+                                {
+                                    BestColorsToUse.map((data, index) => {
+                                        return (
+                                            <div className='w-16 p-1 h-16 mr-3 bg-slate-400 flex cursor-pointer rounded'>
+                                                <div className={`w-full h-full bg-${data.color}`} style={{ backgroundColor: data.color }} onClick={() => setbackgroundColorForImage(data.name)}>
+
+                                                </div>
+                                            </div>
+                                        )
+                                    })
+                                }
+
+                            </div>
                         </div>
                         <div className='mt-10'>
                             <div className='w-full h-auto min-h-[500px] bg-slate-500 lg:flex'>
                                 <div className='lg:w-1/2 w-full h-auto min-h-[300px] bg-slate-200 flex flex-col justify-center items-center'>
                                     <MediaUploader />
                                 </div>
+
                                 <div className='lg:w-1/2 select-none w-full h-auto min-h-[300px] bg-slate-300 flex flex-col justify-center items-center'>
                                     {
                                         AspectRatioOption.loading === true ?
@@ -132,10 +207,11 @@ export default function BackGroundRemove() {
                                                     sizes={"(max-width: 767px) 100vw, 50vw"}
                                                     className="media-uploader_cldImage p-5"
                                                     removeBackground
-                                                    background="white"
+                                                    // background={backgroundColorForImage === "transparent" ? "" : backgroundColorForImage}
+                                                    background={backgroundColorForImage}
                                                 />
                                                 :
-                                                <div className='flex justify-center flex-col items-center font-semibold'>
+                                                <div className='flex justify-center flex-col items-center font-semibold ' style={{ backgroundColor: backgroundColorForImage }} >
                                                     <TbPhotoScan className='text-6xl mb-5' />
                                                     Generative Image
                                                 </div>
@@ -143,11 +219,11 @@ export default function BackGroundRemove() {
                                 </div>
                             </div>
                             <div className='flex mt-14 mb-10'>
-                                <Button className='w-full rounded-full mr-10' onClick={handleTransformImage}>
-                                    Transform Image
+                                <Button className='w-full rounded-full mr-10' onClick={handleSaveImageDetails}>
+                                    Save Image
                                 </Button>
                                 <Button className='w-full rounded-full' onClick={handleSaveImage}>
-                                    Save Image
+                                    Download Image
                                 </Button>
                             </div>
                         </div>

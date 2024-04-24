@@ -19,3 +19,23 @@ model User {
   planId        Int     @default(1)
   creditBalance Int     @default(10)
 }
+
+// schema.prisma
+
+model Image {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  title              String
+  transformationType String
+  publicId           String
+  secureURL          String
+  width              Int?
+  height             Int?
+  aspectRatio        String?
+  color              String?
+  backgroundColor    String?
+  prompt             String?
+  createdAt          DateTime? @default(now())
+  updatedAt          DateTime? @updatedAt
+  imagesize          Int?
+  authorId           String
+}

@@ -11,11 +11,11 @@ export default async function handler(
     res: NextApiResponse,
 ) {
     if (req.method === 'POST') {
-        const { id } = req.body;
+        const { email } = req.body;
         try {
             const user = await prisma.user.findUnique({
                 where: {
-                    id,
+                    email,
                 },
             });
             if (user) {

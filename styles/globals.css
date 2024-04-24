@@ -112,3 +112,12 @@
 .mobile-bg-active {
   @apply bg-slate-800 text-white mt-5 rounded-full xl:py-3 py-2 text-[14px] font-semibold cursor-pointer flex items-center pl-3
 }
+
+.dashboard_gradient {
+  background: rgb(2, 0, 36);
+  background: linear-gradient(140deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+}
+
+.maindashboardiconstyle{
+  @apply w-auto md:h-full h-[90px] text-white flex bg-slate-700 md:bg-transparent rounded-lg items-center justify-around flex-col text-sm font-semibold mb-3 md:mb-0
+}

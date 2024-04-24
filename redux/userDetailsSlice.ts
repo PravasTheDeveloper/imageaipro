@@ -9,8 +9,8 @@ interface UserDetails {
 // Define an async thunk to fetch user details
 export const fetchUserDetails = createAsyncThunk(
   'user/fetchUserDetails',
-  async (userId: string) => {
-    const response = await axios.post("/api/authentication/getuserdetails", { id: userId });
+  async (useremail: string) => {
+    const response = await axios.post("/api/authentication/getuserdetails", { email: useremail });
     return response.data; // Assuming response contains user details
   }
 );
@@ -22,7 +22,15 @@ const userSlice = createSlice({
     loading: false,
     error: null,
   },
-  reducers: {},
+  reducers: {
+    setLoadingTrue: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    setLoadingFalse: (state) => {
+      state.loading = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUserDetails.pending, (state) => {
@@ -41,4 +49,5 @@ const userSlice = createSlice({
   },
 });
 
+export const { setLoadingTrue, setLoadingFalse } = userSlice.actions;
 export default userSlice.reducer;

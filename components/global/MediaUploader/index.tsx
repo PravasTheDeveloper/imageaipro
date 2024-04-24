@@ -25,8 +25,8 @@ const MediaUploader = () => {
   const dispatch = useDispatch()
   console.log(ImageDetails)
   const onUploadSuccessHandler = (result: any) => {
-
-    dispatch(setDimensions({ width: result?.info?.width, height: result?.info?.height, publicId: result?.info?.public_id }));
+    console.log(result)
+    dispatch(setDimensions({ width: result?.info?.width, height: result?.info?.height, publicId: result?.info?.public_id, original_filename: result.info?.original_filename , secureURL:result?.info?.secure_url , imagesize:result?.info?.bytes }));
 
     toast({
       title: 'Image uploaded successfully',
@@ -61,13 +61,13 @@ const MediaUploader = () => {
             <>
               <div className="cursor-pointer overflow-hidden rounded-[10px]">
                 <CldImage
-                  width={400}
-                  height={400}
+                  width={ImageDetails.width}
+                  height={ImageDetails.height}
                   src={ImageDetails.publicId}
                   alt="image"
                   sizes={"(max-width: 767px) 100vw, 50vw"}
                   placeholder={dataUrl as PlaceholderValue}
-                  className="media-uploader_cldImage"
+                  className="media-uploader_cldImage p-5"
                 />
               </div>
             </>

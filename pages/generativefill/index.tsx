@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { download } from '@/lib/utils';
 import { setLoadingFalse } from '@/redux/aspectRationSlice';
 import { RootState } from '@/redux/store';
+import axios from 'axios';
 import { useSession } from 'next-auth/react';
 import { CldImage, getCldImageUrl } from 'next-cloudinary';
 import { useRouter } from 'next/router';
@@ -23,7 +24,10 @@ export default function GenerativeFill() {
     const dispatch = useDispatch()
     const AspectRatioOption = useSelector((state: RootState) => state.aspectRatio)
     const ImageDetails = useSelector((state: RootState) => state.imageData)
-    console.log(AspectRatioOption)
+    const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
+    console.log(session)
+
+
 
     if (AspectRatioOption.loading === true) {
         setTimeout(() => {
@@ -39,21 +43,6 @@ export default function GenerativeFill() {
         if (status === "loading") return;
         if (!session) router.push('/signin');
     }, [session, status, router]);
-
-    const handleTransformImage = () => {
-
-        if (AspectRatioOption.aspectRatio === '') {
-            Swal.fire({
-                title: "Input Error",
-                text: "Please fill all the feild",
-                icon: "error"
-            });
-        } else {
-            const cloudinaryUrl = `https://res.cloudinary.com/dxhaelva2/image/upload/b_gen_fill,ar_${AspectRatioOption},c_pad/c_limit,w_1920/f_auto/q_auto/v1/imageaipro/s9f0elknptqkwmkympwv`;
-            setTransformedUrl(cloudinaryUrl);
-        }
-
-    };
 
     if (status === "loading") {
         return (
@@ -85,6 +74,32 @@ export default function GenerativeFill() {
         }
     };
 
+    const handleSaveImageDetails = async () => {
+        const { width, height, publicId, original_filename } = ImageDetails;
+        const { aspectRatio } = AspectRatioOption
+
+        const response = await axios.post("/api/imageinfosave/imageinfosave", {
+            width,
+            height,
+            publicId,
+            transformationType: "fillBackground",
+            title: inputname == "" ? original_filename : inputname,
+            aspectRatio:aspectRatio,
+            secureURL:ImageDetails.secureURL,
+            // @ts-ignore
+            authorId:userDetails?.id,
+            imagesize : ImageDetails.iamgesize
+        })
+
+        if(response.status = 200){
+            Swal.fire({
+                title: "Save Successfull",
+                text: "Image Details Save Successfull",
+                icon: "success"
+            });
+        }
+    }
+
     return (
         <>
             <div className='w-full h-screen md:flex'>
@@ -100,7 +115,7 @@ export default function GenerativeFill() {
                             <p className='text-slate-500'>
                                 {`Enhance your image's corners with ai`}
                             </p>
-                            <Input type="text" onChange={(e) => { setinputname(e.target.value) }} value={inputname} className='my-10' placeholder="Your File Name" />
+                            <Input type="text" onChange={(e) => { setinputname(e.target.value) }} value={inputname === "" ? ImageDetails.original_filename : inputname} className='my-10' placeholder="Your File Name" />
                             <SelectDemo />
                         </div>
                         <div className='mt-10'>
@@ -141,11 +156,11 @@ export default function GenerativeFill() {
                                 </div>
                             </div>
                             <div className='flex mt-14 mb-10'>
-                                <Button className='w-full rounded-full mr-10' onClick={handleTransformImage}>
-                                    Transform Image
+                                <Button className='w-full rounded-full mr-10' onClick={handleSaveImageDetails}>
+                                    Save Image
                                 </Button>
                                 <Button className='w-full rounded-full' onClick={handleSaveImage}>
-                                    Save Image
+                                    Download Image
                                 </Button>
                             </div>
                         </div>

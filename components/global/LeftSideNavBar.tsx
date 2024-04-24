@@ -10,7 +10,7 @@ import { RiRobot2Line } from "react-icons/ri";
 import { TbZoomScan } from "react-icons/tb";
 import { HiOutlineAdjustments } from "react-icons/hi";
 import { PiSelectionBackground } from "react-icons/pi";
-import { signOut } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import axios from 'axios';
 import { fetchUserDetails } from '@/redux/userDetailsSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ export default function LeftSideNavBar() {
 
     const router = useRouter().route
     const dispatch = useDispatch();
-
+    const { data: session, status } = useSession();
     // console.log(router)
     const { userDetails, loading, error } = useSelector((state: RootState) => state.userdetail);
 
@@ -28,7 +28,11 @@ export default function LeftSideNavBar() {
 
     useEffect(() => {
         // @ts-ignore
-        dispatch(fetchUserDetails("6622978345ce1f88841c7318"));
+        if(session){
+            // @ts-ignore
+            dispatch(fetchUserDetails(session?.user?.email));
+        }
+        
     }, [dispatch])
 
     return (
