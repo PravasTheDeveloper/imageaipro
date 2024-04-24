@@ -62,7 +62,7 @@ export default function UserProjectDetails() {
                             imageUserDetails ?
                                 imageUserDetails.map((data, index) => {
                                     return (
-                                        <div className='w-full cursor-pointer aspect-square bg-slate-400 overflow-hidden rounded-lg relative' onClick={() => getImageDetails(data)}>
+                                        <div key={index} className='w-full cursor-pointer aspect-square bg-slate-400 overflow-hidden rounded-lg relative' onClick={() => getImageDetails(data)}>
                                             <div className='bg-[#00000077] w-full h-full p-3 absolute z-50 flex items-end'>
                                                 <div className='text-white opacity-100 text-sm font-semibold'>
                                                     <p>

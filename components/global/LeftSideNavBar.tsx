@@ -33,7 +33,7 @@ export default function LeftSideNavBar() {
             dispatch(fetchUserDetails(session?.user?.email));
         }
         
-    }, [dispatch])
+    }, [dispatch , session])
 
     return (
         <div className='w-[220px] 2xl:w-[300px] h-full border-r border-slate-400 2xl:p-10 p-5 hidden md:flex flex-col justify-between'>

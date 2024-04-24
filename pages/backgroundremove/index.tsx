@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { DotLoader } from 'react-spinners';
 import Swal from 'sweetalert2';
 
-export default function GenerativeFill() {
+export default function BackGroundRemove() {
 
     const BestColorsToUse = [
         {
@@ -167,7 +167,7 @@ export default function GenerativeFill() {
                                 {
                                     BestColorsToUse.map((data, index) => {
                                         return (
-                                            <div className='w-16 p-1 h-16 mr-3 bg-slate-400 flex cursor-pointer rounded'>
+                                            <div key={index} className='w-16 p-1 h-16 mr-3 bg-slate-400 flex cursor-pointer rounded'>
                                                 <div className={`w-full h-full bg-${data.color}`} style={{ backgroundColor: data.color }} onClick={() => setbackgroundColorForImage(data.name)}>
 
                                                 </div>
