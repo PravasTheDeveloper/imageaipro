@@ -46,22 +46,22 @@ export default function LeftSideNavBar() {
                         <FiHome className='icon-left-bar' />
                         <Link href={"/dashboard"}>Home</Link>
                     </li>
-                    <li className='leftsidebuttonauto'>
+                    {/* <li className='leftsidebuttonauto'>
                         <IoImageOutline className='icon-left-bar' />
                         <Link href={"/dashboard"}>Image Restore</Link>
-                    </li>
+                    </li> */}
                     <li className={`${router === "/generativefill" ? "bg-active" : "leftsidebuttonauto"}`}>
                         <RiRobot2Line className='icon-left-bar' />
                         <Link href={"/generativefill"}>Generative Fill</Link>
                     </li>
-                    <li className='leftsidebuttonauto'>
+                    {/* <li className='leftsidebuttonauto'>
                         <TbZoomScan className='icon-left-bar' />
                         <Link href={"/dashboard"}>Object Remove</Link>
                     </li>
                     <li className='leftsidebuttonauto'>
                         <HiOutlineAdjustments className='icon-left-bar' />
                         <Link href={"/dashboard"}>Object Recolor</Link>
-                    </li>
+                    </li> */}
                     <li className={`${router === "/backgroundremove" ? "bg-active" : "leftsidebuttonauto"}`}>
                         <PiSelectionBackground className='icon-left-bar' />
                         <Link href={"/backgroundremove"}>Background Remove</Link>
@@ -72,7 +72,7 @@ export default function LeftSideNavBar() {
             <div>
                 <div className='leftsidebuttonauto flex items-center  font-semibold px-2'>
                     <CgProfile className='text-lg' />
-                    <Link href={"/dashboard"} className='text-md ml-2' onClick={()=>{signOut()}}>Profile</Link>
+                    <Link href={"/dashboard"} className='text-md ml-2' onClick={()=>{signOut()}}>Sign Out</Link>
                 </div>
                 <div className='leftsidebuttonauto flex items-center  font-semibold px-2'>
                     <RiCoinsLine className='text-lg' />
